@@ -1,0 +1,781 @@
+main:
+    - window:    
+          title: raga
+          size: [450, 300]
+          content:  
+            id: tabs                    
+            tabs:
+                - page:
+                    title: mix
+                    content: 
+                        hor:
+                            - ver:
+                                - vfader: { init: 70.0, color: olive, range: [1, 127]}
+                                  id: mix1                                  
+                                  send:
+                                    - msg: { client: mixer, path: "/track/volume", args: [0, $0] }
+                                    - msg: { client: mixer, path: "/track/1/volume", args: $0 }                                    
+                                - toggle: { color: blue }
+                                  id: mix1-1 
+                                  send:
+                                    - msg: { client: mixer, path: "/track/mute", args: [0, $0] }
+                                    - msg: { client: mixer, path: "/track/1/mute", args: $0 }                                    
+                                - toggle: { color: navy }
+                                  id: mix1-2
+                                  send:
+                                    - msg: { client: mixer, path: "/track/solo", args: [0, $0] }
+                                    - msg: { client: mixer, path: "/track/1/solo", args: $0 }                                    
+                                - label: { text: flow }
+                            - ver:
+                                - vfader: { init: 70.0, color: olive, range: [1, 127] }
+                                  id: mix2
+                                  send:
+                                    - msg: { client: mixer, path: "/track/2/volume", args: $0 }
+                                    - msg: { client: mixer, path: "/track/volume", args: [1, $0] }
+                                - toggle: { color: blue }
+                                  id: mix2-1 
+                                  send:
+                                    - msg: { client: mixer, path: "/track/mute", args: [1, $0] }
+                                    - msg: { client: mixer, path: "/track/2/mute", args: $0 }
+                                - toggle: { color: navy }
+                                  id: mix2-2                                  
+                                  send:
+                                    - msg: { client: mixer, path: "/track/solo", args: [1, $0] }
+                                    - msg: { client: mixer, path: "/track/2/solo", args: $0 }
+                                - label: { text: "sam low" }
+
+                            - ver:
+                                - vfader: { init: 70.0, color: olive, range: [1, 127] }
+                                  id: mix3
+                                  send:
+                                    - msg: { init: 70.0, client: mixer, path: "/track/3/volume", args: $0 }
+                                    - msg: { client: mixer, path: "/track/volume", args: [2, $0] }
+                                - toggle: { color: blue }
+                                  id: mix3-1
+                                  send:
+                                    - msg: { client: mixer, path: "/track/mute", args: [2, $0] }
+                                    - msg: { client: mixer, path: "/track/3/mute", args: $0 }
+                                - toggle: { color: navy }
+                                  id: mix3-2 
+                                  send:
+                                    - msg: { client: mixer, path: "/track/solo", args: [2, $0] }
+                                    - msg: { client: mixer, path: "/track/3/solo", args: $0 }
+                                - label: { text: "sam hi" }
+
+                            - ver:
+                                - vfader: { init: 70.0, color: olive, range: [1, 127] }
+                                  id: mix4
+                                  send:
+                                    - msg: { init: 70.0, client: mixer, path: "/track/4/volume", args: $0 }
+                                    - msg: { client: mixer, path: "/track/volume", args: [3, $0] }
+                                - toggle: { color: blue }
+                                  id: mix4-1 
+                                  send:
+                                    - msg: { client: mixer, path: "/track/mute", args: [3, $0] }
+                                    - msg: { client: mixer, path: "/track/4/mute", args: $0 }
+                                - toggle: { color: navy }
+                                  id: mix4-2 
+                                  send:
+                                    - msg: { client: mixer, path: "/track/solo", args: [3, $0] }
+                                    - msg: { client: mixer, path: "/track/4/solo", args: $0 }
+                                - label: { text: "tap" }
+
+
+                            - ver:
+                                - vfader: { init: 70.0, color: olive, range: [1, 127] }
+                                  id: mix5
+                                  send:
+                                    - msg: { client: mixer, path: "/track/5/volume", args: $0 }
+                                    - msg: { client: mixer, path: "/track/volume", args: [4, $0] }
+                                - toggle: { color: blue }
+                                  id: mix5-1 
+                                  send:
+                                    - msg: { client: mixer, path: "/track/mute", args: [4, $0] }
+                                    - msg: { client: mixer, path: "/track/5/mute", args: $0 }
+                                - toggle: { color: navy }
+                                  id: mix5-2 
+                                  send:
+                                    - msg: { client: mixer, path: "/track/solo", args: [4, $0] }
+                                    - msg: { client: mixer, path: "/track/5/solo", args: $0 }
+                                - label: { text: "synt" }
+
+
+                            - ver:
+                                - vfader: { init: 70.0, color: olive, range: [1, 127] }
+                                  id: mix6
+                                  send:
+                                    - msg: { client: mixer, path: "/track/6/volume", args: $0 }
+                                    - msg: { client: mixer, path: "/track/volume", args: [5, $0] }
+                                - toggle: { color: blue }
+                                  id: mix6-1 
+                                  send:
+                                    - msg: { client: mixer, path: "/track/mute", args: [5, $0] }
+                                    - msg: { client: mixer, path: "/track/6/mute", args: $0 }
+                                - toggle: { color: navy }
+                                  id: mix6-2 
+                                  send:
+                                    - msg: { client: mixer, path: "/track/solo", args: [5, $0] }
+                                    - msg: { client: mixer, path: "/track/6/solo", args: $0 }
+                                - label: { text: "loop" }
+
+                            - ver:
+                                - vfader: { init: 97.0, color: navy, range: [1, 127] }
+                                  id: mix7
+                                  send:
+                                    - msg: { client: mixer, path: "/master/volume", args: $0 }                                    
+                                - toggle: { color: blue }
+                                  id: mix7-1 
+                                  send:
+                                    - msg: { client: mixer, path: "/master/mute", args: $0 }
+                                    
+                                - toggle: { color: navy }
+                                  id: mix7-2 
+                                  send:
+                                    - msg: { client: mixer, path: "/master/solo", args: $0 }                                    
+                                - label: { text: "master" }
+                    keys:
+                        - { key: "1", send: [ msg: { path: "/mix1/add-float", args: 3.0 } ] }
+                        - key: "q"
+                          send: [ msg: { path: "/mix1/add-float", args: -3.0 } ]
+                        - key: "2"
+                          send: [ msg: { path: "/mix2/add-float", args: 3.0 } ]
+                        - key: "w"
+                          send: [ msg: { path: "/mix2/add-float", args: -3.0 } ]
+                        - key: "3"
+                          send: [ msg: { path: "/mix3/add-float", args: 3.0 } ]
+                        - key: "e"
+                          send: [ msg: { path: "/mix3/add-float", args: -3.0 } ]
+                        - key: "4"
+                          send: [ msg: { path: "/mix4/add-float", args: 3.0 } ]
+                        - key: "r"
+                          send: [ msg: { path: "/mix4/add-float", args: -3.0 } ]
+                        - key: "5"
+                          send: [ msg: { path: "/mix5/add-float", args: 3.0 } ]
+                        - key: "t"
+                          send: [ msg: { path: "/mix5/add-float", args: -3.0 } ]
+                        - key: "6"
+                          send: [ msg: { path: "/mix6/add-float", args: 3.0 } ]
+                        - key: "y"
+                          send: [ msg: { path: "/mix6/add-float", args: -3.0 } ]
+                        - key: "7"
+                          send: [ msg: { path: "/mix7/add-float", args: 3.0 } ]
+                        - key: "u"
+                          send: [ msg: { path: "/mix7/add-float", args: -3.0 } ]
+
+                        - { key: "a", send: [ msg: { path: "/mix1-1/toggle" } ] }
+                        - { key: "z", send: [ msg: { path: "/mix1-2/toggle" } ] }
+
+                        - { key: "s", send: [ msg: { path: "/mix2-1/toggle" } ] }
+                        - { key: "x", send: [ msg: { path: "/mix2-2/toggle" } ] }
+
+                        - { key: "d", send: [ msg: { path: "/mix3-1/toggle" } ] }
+                        - { key: "c", send: [ msg: { path: "/mix3-2/toggle" } ] }
+
+                        - { key: "f", send: [ msg: { path: "/mix4-1/toggle" } ] }
+                        - { key: "v", send: [ msg: { path: "/mix4-2/toggle" } ] }
+
+                        - { key: "g", send: [ msg: { path: "/mix5-1/toggle" } ] }
+                        - { key: "b", send: [ msg: { path: "/mix5-2/toggle" } ] }
+
+                        - { key: "h", send: [ msg: { path: "/mix6-1/toggle" } ] }
+                        - { key: "n", send: [ msg: { path: "/mix6-2/toggle" } ] }
+
+                        - { key: "j", send: [ msg: { path: "/mix7-1/toggle" } ] }
+                        - { key: "m", send: [ msg: { path: "/mix7-2/toggle" } ] }
+                - page: 
+                    title: sam
+                    content: 
+                        ver:
+                            - multi-toggle:
+                                size: [4, 3]
+                                color: olive
+                              id: sam
+                              send:
+                                client: sampler                                                                
+                                case 0 0 true:
+                                    - msg: { path: /play, args: [0, 0] }
+                                case 0 0 false:
+                                    - msg: { path: /stop, args: [0] }
+                                case 1 0 true:
+                                    - msg: { path: /play, args: [1, 1] }
+                                case 1 0 false:
+                                    - msg: { path: /stop, args: [1] }
+                                case 2 0 true:
+                                    - msg: { path: /play, args: [2, 2] }
+                                case 2 0 false:
+                                    - msg: { path: /stop, args: [2] }
+                                case 3 0 true:
+                                    - msg: { path: /play, args: [3, 3] }
+                                case 3 0 false:
+                                    - msg: { path: /stop, args: [3] }
+                                case 0 1 true:
+                                    - msg: { path: /play, args: [4, 4] }
+                                case 0 1 false:
+                                    - msg: { path: /stop, args: [4] }
+                                case 1 1 true:
+                                    - msg: { path: /play, args: [5, 5] }
+                                case 1 1 false:
+                                    - msg: { path: /stop, args: [5] }
+                                case 2 1 true:
+                                    - msg: { path: /play, args: [6, 6] }
+                                case 2 1 false:
+                                    - msg: { path: /stop, args: [6] }
+                                case 3 1 true:
+                                    - msg: { path: /play, args: [7, 7] }
+                                case 3 1 false:
+                                    - msg: { path: /stop, args: [7] }
+                                case 0 2 true:
+                                    - msg: { path: /play, args: [8, 8] }
+                                case 0 2 false:
+                                    - msg: { path: /stop, args: [8] }
+                                case 1 2 true:
+                                    - msg: { path: /play, args: [9, 9] }
+                                case 1 2 false:
+                                    - msg: { path: /stop, args: [9] }
+                                case 2 2 true:
+                                    - msg: { path: /play, args: [10, 10] }
+                                case 2 2 false:
+                                    - msg: { path: /stop, args: [10] }
+                                case 3 2 true:
+                                    - msg: { path: /play, args: [11, 11] }
+                                case 3 2 false:
+                                    - msg: { path: /stop, args: [11] }
+
+                    keys:
+                        - { key: "1", send: [ msg: { path: "/sam/multi-toggle", args: [0, 0] } ] }
+                        - { key: "2", send: [ msg: { path: "/sam/multi-toggle", args: [1, 0] } ] }
+                        - { key: "3", send: [ msg: { path: "/sam/multi-toggle", args: [2, 0] } ] }
+                        - { key: "4", send: [ msg: { path: "/sam/multi-toggle", args: [3, 0] } ] }
+
+                        - { key: "q", send: [ msg: { path: "/sam/multi-toggle", args: [0, 1] } ] }
+                        - { key: "w", send: [ msg: { path: "/sam/multi-toggle", args: [1, 1] } ] }
+                        - { key: "e", send: [ msg: { path: "/sam/multi-toggle", args: [2, 1] } ] }
+                        - { key: "r", send: [ msg: { path: "/sam/multi-toggle", args: [3, 1] } ] }
+
+                        - { key: "a", send: [ msg: { path: "/sam/multi-toggle", args: [0, 2] } ] }
+                        - { key: "s", send: [ msg: { path: "/sam/multi-toggle", args: [1, 2] } ] }
+                        - { key: "d", send: [ msg: { path: "/sam/multi-toggle", args: [2, 2] } ] }
+                        - { key: "f", send: [ msg: { path: "/sam/multi-toggle", args: [3, 2] } ] }
+
+                - page:
+                    title: sam-vols
+                    content: 
+                        ver:
+                            - hor:
+                                - dial:
+                                    init: 0.5
+                                    color: olive
+                                - dial:
+                                    init: 0.5
+                                    color: olive
+                                - dial:
+                                    init: 0.5
+                                    color: olive
+                                - dial:
+                                    init: 0.5
+                                    color: olive
+                            - hor:
+                                - dial:
+                                    init: 0.5
+                                    color: olive
+                                - dial:
+                                    init: 0.5
+                                    color: olive
+                                - dial:
+                                    init: 0.5
+                                    color: olive
+                                - dial:
+                                    init: 0.5
+                                    color: olive
+                            - hor:
+                                - dial:
+                                    init: 0.5
+                                    color: olive
+                                - dial:
+                                    init: 0.5
+                                    color: olive
+                                - dial:
+                                    init: 0.5
+                                    color: olive
+                                - dial:
+                                    init: 0.5
+                                    color: olive                                 
+
+                - page: 
+                    title: synt
+                    content: 
+                        double-check:
+                                color1: olive
+                                color2: blue
+                                sizes: [7, 7, 7, 7, 7]
+                                orient: [true, false, false]
+                                texts: [[pad1, []], [pad2, []], [lead, []], [fx, []], [oth, []]]
+                        id: synt
+                    keys:
+                        - { key: "1", send: [ msg: { path: "/synt/double-check/1", args: [0] } ] }
+                        - { key: "2", send: [ msg: { path: "/synt/double-check/1", args: [1] } ] }
+                        - { key: "3", send: [ msg: { path: "/synt/double-check/1", args: [2] } ] }
+                        - { key: "4", send: [ msg: { path: "/synt/double-check/1", args: [3] } ] }
+                        - { key: "5", send: [ msg: { path: "/synt/double-check/1", args: [4] } ] }
+
+                        - { key: "q", send: [ msg: { path: "/synt/double-check/2", args: [0] } ] }
+                        - { key: "w", send: [ msg: { path: "/synt/double-check/2", args: [1] } ] }
+                        - { key: "e", send: [ msg: { path: "/synt/double-check/2", args: [2] } ] }
+                        - { key: "r", send: [ msg: { path: "/synt/double-check/2", args: [3] } ] }
+                        - { key: "a", send: [ msg: { path: "/synt/double-check/2", args: [4] } ] }
+                        - { key: "s", send: [ msg: { path: "/synt/double-check/2", args: [5] } ] }
+                        - { key: "d", send: [ msg: { path: "/synt/double-check/2", args: [6] } ] }
+
+                - page:
+                    title: loop
+                    content: 
+                        multi-toggle:
+                            color: olive
+                            size: [4, 4]
+
+                - page:
+                    title: flow
+                    content:
+                        ver:
+                            - hor:
+                                - ver:
+                                    - dial: {}
+                                      id: flow-dial-1
+                                      send:
+                                        - msg: { client: flow, path: "/set_volume", args: [0, $0] }
+                                    - toggle:                                        
+                                      id: flow-toggle-1
+                                      send:  
+                                        client: flow                                      
+                                        case true: 
+                                            - msg: { path: "/resume", args: 0 }
+                                        case false:
+                                            - msg: { path: "/stop", args: 0 }
+                                - ver:
+                                    - dial: {}
+                                      id: flow-dial-2
+                                      send:
+                                        - msg: { client: flow, path: "/set_volume", args: [1, $0] }
+                                    - toggle: {}
+                                      id: flow-toggle-2
+                                      send:  
+                                        client: flow                                      
+                                        case true: 
+                                            - msg: { path: "/resume", args: 1 }
+                                        case false:
+                                            - msg: { path: "/stop", args: 1 }
+                                - ver:
+                                    - dial: {}
+                                      id: flow-dial-3
+                                      send:
+                                        - msg: { client: flow, path: "/set_volume", args: [2, $0] }
+                                    - toggle: {}
+                                      id: flow-toggle-3
+                                      send:
+                                        client: flow
+                                        case true: 
+                                            - msg: { path: "/resume", args: 2 }
+                                        case false:
+                                            - msg: { path: "/stop", args: 2 }
+                                - ver:
+                                    - dial: {}
+                                      id: flow-dial-4
+                                      send:
+                                        - msg: { client: flow, path: "/set_volume", args: [3, $0] }
+                                    - toggle: {}
+                                      id: flow-toggle-4
+                                      send:
+                                        client: flow
+                                        case true: 
+                                            - msg: { path: "/resume", args: 3 }
+                                        case false:
+                                            - msg: { path: "/stop", args: 3 }
+                            - hor:
+                                - ver:
+                                    - dial: {}
+                                      id: flow-dial-5
+                                      send:
+                                        - msg: { client: flow, path: "/set_volume", args: [4, $0] }
+                                    - toggle: {}
+                                      id: flow-toggle-5
+                                      send:
+                                        client: flow
+                                        case true: 
+                                            - msg: { path: "/resume", args: 4 }
+                                        case false:
+                                            - msg: { path: "/stop", args: 4 }
+                                - ver:
+                                    - dial: {}
+                                      id: flow-dial-6
+                                      send:
+                                        - msg: { client: flow, path: "/set_volume", args: [5, $0] }
+                                    - toggle: {}
+                                      id: flow-toggle-6
+                                      send:
+                                        client: flow
+                                        case true: 
+                                            - msg: { path: "/resume", args: 5 }
+                                        case false:
+                                            - msg: { path: "/stop", args: 5 }
+                                - ver:
+                                    - dial: {}
+                                      id: flow-dial-7
+                                      send:
+                                        - msg: { client: flow, path: "/set_volume", args: [6, $0] }
+                                    - toggle: {}
+                                      id: flow-toggle-7
+                                      send:
+                                        client: flow
+                                        case true: 
+                                            - msg: { path: "/resume", args: 6 }
+                                        case false:
+                                            - msg: { path: "/stop", args: 6 }
+                                - ver:
+                                    - dial: {}
+                                      id: flow-dial-8
+                                      send:
+                                        - msg: { client: flow, path: "/set_volume", args: [7, $0] }
+                                    - toggle: {}
+                                      id: flow-toggle-8
+                                      send:
+                                        client: flow
+                                        case true: 
+                                            - msg: { path: "/resume", args: 7 }
+                                        case false:
+                                            - msg: { path: "/stop", args: 7 }
+
+                    keys:
+                        - { key: "1", send: [ msg: { path: "/flow-toggle-1/toggle" } ] }
+                        - { key: "2", send: [ msg: { path: "/flow-toggle-2/toggle" } ] }
+                        - { key: "3", send: [ msg: { path: "/flow-toggle-3/toggle" } ] }
+                        - { key: "4", send: [ msg: { path: "/flow-toggle-4/toggle" } ] }
+                        - { key: "q", send: [ msg: { path: "/flow-toggle-5/toggle" } ] }
+                        - { key: "w", send: [ msg: { path: "/flow-toggle-6/toggle" } ] }
+                        - { key: "e", send: [ msg: { path: "/flow-toggle-7/toggle" } ] }
+                        - { key: "r", send: [ msg: { path: "/flow-toggle-8/toggle" } ] }
+
+                - page:
+                    title: tap
+                    content:
+                        ver:                             
+                            - hor:
+                                - button: { color: orange }
+                                  id: tap-1
+                                - button: { color: orange }
+                                  id: tap-2
+                                - button: { color: orange }
+                                  id: tap-3
+                            - hor:
+                                - button: { color: orange }
+                                  id: tap-4
+                                - button: { color: orange }
+                                  id: tap-5
+                                - button: { color: orange }
+                                  id: tap-6
+                    keys:
+                        - { key: "1", send: [ msg: { path: "/tap-1", args: [true] } ] }
+                        - { key: "2", send: [ msg: { path: "/tap-2", args: [true] } ] }
+                        - { key: "3", send: [ msg: { path: "/tap-3", args: [true] } ] }
+                        - { key: "q", send: [ msg: { path: "/tap-4", args: [true] } ] }
+                        - { key: "w", send: [ msg: { path: "/tap-5", args: [true] } ] }
+                        - { key: "e", send: [ msg: { path: "/tap-6", args: [true] } ] }
+
+                - page: 
+                    title: other
+                    content: 
+                        double-check:
+                            color1: olive
+                            color2: blue
+                            sizes: [4, 4, 4, 4]
+                            orient: [true, true, true]
+                            texts: [[pad1, []], [pad2, []], [lead, []], [fx, []]]
+
+                - page: 
+                    title: gens
+                    content: 
+                        hor:
+                            - ver:
+                                - dial: {}
+                                - dial: {}
+                                - toggle: {}
+                                - toggle: {}
+
+                            - ver:
+                                - dial: {}
+                                - dial: {}
+                                - toggle: {}
+                                - toggle: {}
+                            - ver:
+                                - dial: {}
+                                - dial: {}
+                                - toggle: {}
+                                - toggle: {}
+
+                            - ver:
+                                - dial: {}
+                                - dial: {}
+                                - toggle: {}
+                                - toggle: {}
+
+                            - ver:
+                                - dial: {}
+                                - dial: {}
+                                - toggle: {}
+                                - toggle: {}
+
+                            - ver:
+                                - dial: {}
+                                - dial: {}
+                                - toggle: {}
+                                - toggle: {}
+
+                - page: 
+                    title: tracks
+                    content:
+                        double-check:
+                            sizes: [8, 8, 8]
+                            orient: [true, true, false]
+                            texts: [[part1, [bhopali, cosmonauts, hams, fidel]], [part2, ["no mosquitos", "concerto", "bageshri"]], [part3, ["no mosquitos", "concerto", "bageshri"]]]
+                        id: tracks
+                        send: 
+                            # Bhupali                       
+                            case 0 0:  
+                                # Flow 
+                                - msg: { client: flow, path: "/load", args: [0, "/home/anton/flow/osc-studio/flow/bhupali/bhopali-pad-G.wav", 1] }
+                                - msg: { path: "/flow-toggle-1", args: true }
+                                - msg: { path: "/flow-toggle-1/set-text", args: "Ocean" }
+
+                                # Sampler
+                                - msg: { client: sampler, path: "/set_tempo", args: 90 }
+                                - msg: { client: sampler, path: "/load", args: [0, "/home/anton/flow/osc-studio/sam/bhupali/stut-beat-bd-90-06.wav", 90, true] }
+                                - msg: { client: sampler, path: "/load", args: [1, "/home/anton/flow/osc-studio/sam/bhupali/stut-beat-pulse-90-06.wav", 90, true] }
+                                - msg: { client: sampler, path: "/load", args: [2, "/home/anton/flow/osc-studio/sam/bhupali/complex-tambourine-pulse-120.wav", 120, true] }
+                                - msg: { client: sampler, path: "/set_master_gain", args: 1.0 }
+                                - msg: { client: sampler, path: "/set_gain", args: [0, 1.55]}
+                                - msg: { client: sampler, path: "/set_gain", args: [1, 1.4]}
+                                - msg: { client: sampler, path: "/set_gain", args: [2, 1.5]}
+                                - msg: { client: sampler, path: "/set_speed", args: [2, 2]}
+
+                                - msg: { path: "/sam/set-text-list", args: [0, "Beat"] }
+                                - msg: { path: "/sam/set-text-list", args: [1, "Pulse"] }
+                                - msg: { path: "/sam/set-text-list", args: [2, "Metro"] }
+
+                                - msg: { client: sampler, path: "/set_output", args: [0, 0] }
+                                - msg: { client: sampler, path: "/set_output", args: [1, 1] }
+                                - msg: { client: sampler, path: "/set_output", args: [2, 1] }
+
+                            case-off 0 0:
+                                - msg: { path: "/flow-toggle-1", args: false }
+                                - msg: { path: "/flow-toggle-1/set-text", args: "" }
+
+                                - msg: { client: sampler, path: "/fade_out_and_stop_all", args: 3.5 }
+                                - msg: { path: "/cold/sam", args: [0, 0, false] }
+                                - msg: { path: "/cold/sam", args: [1, 0, false] }
+                                - msg: { path: "/cold/sam", args: [2, 0, false] }
+                                - msg: { path: "/sam/set-text-list", args: [0, ""] }
+                                - msg: { path: "/sam/set-text-list", args: [1, ""] }
+                                - msg: { path: "/sam/set-text-list", args: [2, ""] }
+                            # Cosmo                             
+                            case 0 1:  
+                                - msg: { client: flow, path: "/load", args: [0, "/home/anton/flow/osc-studio/flow/cosmo/kirwani-pad-F.wav", 1] }
+                                - msg: { client: flow, path: "/load", args: [1, "/home/anton/flow/osc-studio/flow/cosmo/kirwani-pad-hi-F.wav", 1] }
+                                - msg: { client: flow, path: "/load", args: [2, "/home/anton/flow/osc-studio/flow/cosmo/spacenoise1.wav", 1] }
+                                - msg: { client: flow, path: "/load", args: [3, "/home/anton/flow/osc-studio/flow/cosmo/appolo-problem.wav", 1] }
+                                - msg: { path: "/flow-toggle-1", args: true }
+                                - msg: { path: "/flow-toggle-2", args: true }
+                                - msg: { path: "/flow-toggle-3", args: true }
+                                - msg: { path: "/flow-toggle-1/set-text", args: "Lows" }
+                                - msg: { path: "/flow-toggle-2/set-text", args: "Highs" }
+                                - msg: { path: "/flow-toggle-3/set-text", args: "Noize" }
+                                - msg: { path: "/flow-toggle-4/set-text", args: "Vox" }
+                            case-off 0 1:
+                                - msg: { path: "/flow-toggle-1", args: false }
+                                - msg: { path: "/flow-toggle-2", args: false }
+                                - msg: { path: "/flow-toggle-3", args: false }
+                                - msg: { path: "/flow-toggle-4", args: false }
+                                - msg: { path: "/flow-toggle-1/set-text", args: "" }
+                                - msg: { path: "/flow-toggle-2/set-text", args: "" }
+                                - msg: { path: "/flow-toggle-3/set-text", args: "" }
+                                - msg: { path: "/flow-toggle-4/set-text", args: "" }
+
+                            # Hams
+                            case 0 2: 
+                                - msg: { client: flow, path: "/load", args: [0, "/home/anton/flow/osc-studio/flow/swan/hamsadhvani-pad-E.wav", 1] }
+                                - msg: { client: flow, path: "/load", args: [1, "/home/anton/flow/osc-studio/flow/swan/beach-pebble.wav", 1] }
+                                - msg: { path: "/flow-toggle-1", args: true }
+                                - msg: { path: "/flow-toggle-1/set-text", args: "Drone" }
+                                - msg: { path: "/flow-toggle-2/set-text", args: "Sea" }
+
+                            case-off 0 2:
+                                - msg: { path: "/flow-toggle-1", args: false }
+                                - msg: { path: "/flow-toggle-2", args: false }
+                                - msg: { path: "/flow-toggle-1/set-text", args: "" }
+                                - msg: { path: "/flow-toggle-2/set-text", args: "" }
+
+                            # Fidel
+                            case 0 3:
+                                - msg: { client: flow, path: "/load", args: [0, "/home/anton/flow/osc-studio/flow/fidel/comp-test-drone-2-E.wav", 1] }
+                                - msg: { client: flow, path: "/load", args: [1, "/home/anton/flow/osc-studio/flow/fidel/fidel-all.wav", 1] }
+                                - msg: { path: "/flow-toggle-1", args: true }
+                                - msg: { path: "/flow-toggle-1/set-text", args: "Drone" }
+                                - msg: { path: "/flow-toggle-2/set-text", args: "Vox" }
+
+                                # Sampler
+
+                                - msg: { client: sampler, path: "/load", args: [0, "/home/anton/flow/osc-studio/sam/fidel/glitch-1-bd-110-04.wav", 110, true] }
+                                - msg: { client: sampler, path: "/load", args: [1, "/home/anton/flow/osc-studio/sam/fidel/glitch-1-pulse-110.wav", 110, true] }
+                                - msg: { client: sampler, path: "/load", args: [2, "/home/anton/flow/osc-studio/sam/fidel/bass-100-light-06.wav", 100, false] }
+                                - msg: { client: sampler, path: "/load", args: [3, "/home/anton/flow/osc-studio/sam/fidel/bass-100-main-06.wav", 100, false] }
+                                - msg: { client: sampler, path: "/load", args: [4, "/home/anton/flow/osc-studio/sam/fidel/tambourine-pulse-120.wav", 120, true] }
+                                - msg: { client: sampler, path: "/load", args: [5, "/home/anton/flow/osc-studio/sam/fidel/metro-tick-4-4-120.wav", 120, true] }
+                                - msg: { client: sampler, path: "/set_master_gain", args: 0.75 }
+
+                                - msg: { client: sampler, path: "/set_tempo", args: 100 }
+                                - msg: { client: sampler, path: "/set_gain", args: [0, 1]}
+                                - msg: { client: sampler, path: "/set_gain", args: [1, 0.75]}
+                                - msg: { client: sampler, path: "/set_gain", args: [2, 0.9]}
+                                - msg: { client: sampler, path: "/set_gain", args: [3, 0.9]}
+                                - msg: { client: sampler, path: "/set_gain", args: [4, 2]}
+                                - msg: { client: sampler, path: "/set_gain", args: [5, 3]}
+
+                                - msg: { path: "/sam/set-text-list", args: [0, "Kick"] }
+                                - msg: { path: "/sam/set-text-list", args: [1, "Pulse"] }
+                                - msg: { path: "/sam/set-text-list", args: [2, "Light bass"] }
+                                - msg: { path: "/sam/set-text-list", args: [3, "Bass"] }
+                                - msg: { path: "/sam/set-text-list", args: [4, "Tamb"] }
+                                - msg: { path: "/sam/set-text-list", args: [5, "Metro"] }
+
+                                - msg: { client: sampler, path: "/set_gain", args: [0, 1] }
+                                - msg: { client: sampler, path: "/set_gain", args: [1, 0.75] }
+                                - msg: { client: sampler, path: "/set_gain", args: [2, 0.9] }
+                                - msg: { client: sampler, path: "/set_gain", args: [3, 0.9] }
+                                - msg: { client: sampler, path: "/set_gain", args: [4, 2] }
+                                - msg: { client: sampler, path: "/set_gain", args: [5, 3] }
+
+                                - msg: { client: sampler, path: "/set_output", args: [0, 0] }
+                                - msg: { client: sampler, path: "/set_output", args: [1, 1] }
+                                - msg: { client: sampler, path: "/set_output", args: [2, 0] }
+                                - msg: { client: sampler, path: "/set_output", args: [3, 0] }
+                                - msg: { client: sampler, path: "/set_output", args: [4, 3] }
+                                - msg: { client: sampler, path: "/set_output", args: [5, 3] }
+
+                                - msg: { client: sampler, path: "/set_loop_ratio", args: [0, 16] }
+                                - msg: { client: sampler, path: "/set_loop_ratio", args: [1, 8] }
+                                - msg: { client: sampler, path: "/set_loop_ratio", args: [2, 16] }
+                                - msg: { client: sampler, path: "/set_loop_ratio", args: [3, 16] }
+                                - msg: { client: sampler, path: "/set_loop_ratio", args: [4, 16] }
+                                - msg: { client: sampler, path: "/set_loop_ratio", args: [5, 16] }
+
+                            case-off 0 3:                            
+                                - msg: { path: "/flow-toggle-1", args: false }
+                                - msg: { path: "/flow-toggle-2", args: false }
+                                - msg: { path: "/flow-toggle-1/set-text", args: "" }
+                                - msg: { path: "/flow-toggle-2/set-text", args: "" }
+
+                                - msg: { client: sampler, path: "/fade_out_and_stop_all", args: 3.5 }
+                                - msg: { path: "/cold/sam", args: [0, 0, false] }
+                                - msg: { path: "/cold/sam", args: [1, 0, false] }
+                                - msg: { path: "/cold/sam", args: [2, 0, false] }
+                                - msg: { path: "/cold/sam", args: [3, 0, false] }
+                                - msg: { path: "/cold/sam", args: [0, 0, false] }
+                                - msg: { path: "/cold/sam", args: [1, 1, false] }
+                                - msg: { path: "/sam/set-text-list", args: [0, ""] }
+                                - msg: { path: "/sam/set-text-list", args: [1, ""] }
+                                - msg: { path: "/sam/set-text-list", args: [2, ""] }
+                                - msg: { path: "/sam/set-text-list", args: [3, ""] }
+                                - msg: { path: "/sam/set-text-list", args: [4, ""] }
+                                - msg: { path: "/sam/set-text-list", args: [5, ""] }
+
+                                - msg: { client: sampler, path: "/set_loop_ratio", args: [0, 8] }
+                                - msg: { client: sampler, path: "/set_loop_ratio", args: [1, 8] }
+                                - msg: { client: sampler, path: "/set_loop_ratio", args: [2, 8] }
+                                - msg: { client: sampler, path: "/set_loop_ratio", args: [3, 8] }
+                                - msg: { client: sampler, path: "/set_loop_ratio", args: [4, 8] }
+                                - msg: { client: sampler, path: "/set_loop_ratio", args: [5, 8] }
+
+                    keys:
+                        - { key: "1", send: [ msg: { path: "/tracks/double-check/1", args: 0 } ] }
+                        - { key: "2", send: [ msg: { path: "/tracks/double-check/1", args: 1 } ] }
+                        - { key: "3", send: [ msg: { path: "/tracks/double-check/1", args: 2 } ] }
+
+                        - { key: "q", send: [ msg: { path: "/tracks/double-check/2", args: 0 } ] }
+                        - { key: "w", send: [ msg: { path: "/tracks/double-check/2", args: 1 } ] }
+                        - { key: "e", send: [ msg: { path: "/tracks/double-check/2", args: 2 } ] }
+                        - { key: "r", send: [ msg: { path: "/tracks/double-check/2", args: 3 } ] }
+
+                        - { key: "a", send: [ msg: { path: "/tracks/double-check/2", args: 4 } ] }
+                        - { key: "s", send: [ msg: { path: "/tracks/double-check/2", args: 5 } ] }
+                        - { key: "d", send: [ msg: { path: "/tracks/double-check/2", args: 6 } ] }
+                        - { key: "f", send: [ msg: { path: "/tracks/double-check/2", args: 7 } ] }
+
+                - page:
+                    title: phones
+                    content:
+                      ver:
+                        - label: { text: "elems" }
+                        - hor: 
+                            - ver:
+                                - dial: {}
+                                - label: { text: "flow" }
+                            - ver:
+                                - dial: {}
+                                - label: { text: "sam low" }
+                            - ver:
+                                - dial: {}
+                                - label: { text: "sam hi" }
+                            - ver:
+                                - dial: {}
+                                - label: { text: "tap" }                            
+                        - hor:
+                            - ver:
+                                - dial: {}
+                                - label: { text: "synt" }
+                            - ver:
+                                - dial: {}
+                                - label: { text: "loop" }
+                            - ver:
+                                - dial: { color: olive }
+                                - label: { text: "metro", color: olive }
+                            - ver:
+                                - dial: { color: olive }
+                                - label: { text: "metro", color: olive }   
+                        - label: { text: "main", color: olive }
+                        - hfader: { color: olive }                                                    
+          
+
+keys:
+
+  - key: "9"
+    send:
+      - msg: { path: /tabs, args: 0 }
+
+  - key: "0"
+    send:
+      - msg: { path: /tabs, args: 1 }
+
+  - key: "-"
+    send:
+      - msg: { path: /tabs, args: 3 }
+
+  - key: "="
+    send:
+      - msg: { path: /tabs, args: 4 }
+
+  - key: "o"
+    send:
+      - msg: { path: /tabs, args: 5 }
+
+  - key: "p"
+    send:
+      - msg: { path: /tabs, args: 6 }
+
+  - key: "["
+    send:
+      - msg: { path: /tabs, args: 7 }
+
+  - key: "]"
+    send:
+      - msg: { path: /tabs, args: 8 }
+  - key: "'"
+    send:
+      - msg: { path: /tabs, args: 9 }

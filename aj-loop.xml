@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<aj-snapshot>
+<alsa>
+  <client name="System">
+    <port id="0" />
+    <port id="1" />
+  </client>
+  <client name="Midi Through">
+    <port id="0" />
+    <port id="1" />
+    <port id="2" />
+    <port id="3" />
+    <port id="4" />
+    <port id="5" />
+    <port id="6" />
+    <port id="7" />
+    <port id="8" />
+    <port id="9" />
+    <port id="10" />
+    <port id="11" />
+    <port id="12" />
+    <port id="13" />
+    <port id="14" />
+    <port id="15" />
+  </client>
+  <client name="Virtual Raw MIDI 3-0">
+    <port id="0" />
+  </client>
+  <client name="Virtual Raw MIDI 3-1">
+    <port id="0" />
+  </client>
+  <client name="Virtual Raw MIDI 3-2">
+    <port id="0" />
+  </client>
+  <client name="Virtual Raw MIDI 3-3">
+    <port id="0" />
+  </client>
+  <client name="UMX 250">
+    <port id="0">
+      <connection client="Csound" port="0" />
+    </port>
+  </client>
+  <client name="Csound" />
+</alsa>
+<jack>
+  <client name="system">
+    <port name="capture_1">
+      <connection port="jack2alsa:playback_1" />
+    </port>
+    <port name="capture_2">
+      <connection port="jack2alsa:playback_2" />
+    </port>
+  </client>
+  <client name="alsa2jack">
+    <port name="capture_1">
+      <connection port="system:playback_1" />
+    </port>
+    <port name="capture_2">
+      <connection port="system:playback_2" />
+    </port>
+  </client>
+  <client name="PulseAudio JACK Sink">
+    <port name="front-left">
+      <connection port="system:playback_1" />
+    </port>
+    <port name="front-right">
+      <connection port="system:playback_2" />
+    </port>
+  </client>
+  <client name="sampler">
+    <port name="output1">
+      <connection port="system:playback_1" />
+    </port>
+    <port name="output2">
+      <connection port="system:playback_2" />
+    </port>
+    <port name="output3" />
+    <port name="output4" />
+    <port name="output5" />
+    <port name="output6" />
+    <port name="output7" />
+    <port name="output8" />
+  </client>
+  <client name="synt">
+    <port name="output1">
+      <connection port="sampler:input1" />
+    </port>
+    <port name="output2">
+      <connection port="sampler:input2" />
+    </port>
+  </client>
+</jack>
+</aj-snapshot>

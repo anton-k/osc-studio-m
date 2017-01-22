@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<alsa>
+  <client name="System">
+    <port id="0" />
+    <port id="1" />
+  </client>
+  <client name="Midi Through">
+    <port id="0" />
+    <port id="1" />
+    <port id="2" />
+    <port id="3" />
+    <port id="4" />
+    <port id="5" />
+    <port id="6" />
+    <port id="7" />
+    <port id="8" />
+    <port id="9" />
+    <port id="10" />
+    <port id="11" />
+    <port id="12" />
+    <port id="13" />
+    <port id="14" />
+    <port id="15" />
+  </client>
+  <client name="a2jmidid" />
+</alsa>
+<jack>
+  <client name="system">
+    <port name="capture_1">
+      <connection port="PulseAudio JACK Source:front-left" />
+    </port>
+    <port name="capture_2">
+      <connection port="PulseAudio JACK Source:front-right" />
+    </port>
+    <port name="monitor_1" />
+    <port name="monitor_2" />
+  </client>
+  <client name="a2j">
+    <port name="Midi Through [14] (capture): Midi Through Port-0" />
+    <port name="Midi Through [14] (capture): Midi Through Port-1" />
+    <port name="Midi Through [14] (capture): Midi Through Port-2" />
+    <port name="Midi Through [14] (capture): Midi Through Port-3" />
+    <port name="Midi Through [14] (capture): Midi Through Port-4" />
+    <port name="Midi Through [14] (capture): Midi Through Port-5" />
+    <port name="Midi Through [14] (capture): Midi Through Port-6" />
+    <port name="Midi Through [14] (capture): Midi Through Port-7" />
+    <port name="Midi Through [14] (capture): Midi Through Port-8" />
+    <port name="Midi Through [14] (capture): Midi Through Port-9" />
+    <port name="Midi Through [14] (capture): Midi Through Port-10" />
+    <port name="Midi Through [14] (capture): Midi Through Port-11" />
+    <port name="Midi Through [14] (capture): Midi Through Port-12" />
+    <port name="Midi Through [14] (capture): Midi Through Port-13" />
+    <port name="Midi Through [14] (capture): Midi Through Port-14" />
+    <port name="Midi Through [14] (capture): Midi Through Port-15" />
+  </client>
+  <client name="PulseAudio JACK Sink">
+    <port name="front-left">
+      <connection port="system:playback_1" />
+    </port>
+    <port name="front-right">
+      <connection port="system:playback_2" />
+    </port>
+  </client>
+  <client name="mixer">
+    <port name="output1">
+      <connection port="system:playback_1" />
+    </port>
+    <port name="output2">
+      <connection port="system:playback_2" />
+    </port>
+    <port name="output3" />
+    <port name="output4" />
+    <port name="output5" />
+    <port name="output6" />
+    <port name="output7" />
+    <port name="output8" />
+    <port name="output9" />
+    <port name="output10" />
+    <port name="output11" />
+    <port name="output12" />
+    <port name="output13" />
+    <port name="output14" />
+    <port name="output15" />
+    <port name="output16" />
+  </client>
+  <client name="flow">
+    <port name="output1">
+      <connection port="mixer:input1" />
+    </port>
+    <port name="output2">
+      <connection port="mixer:input2" />
+    </port>
+  </client>
+  <client name="sampler">
+    <port name="output1">
+      <connection port="mixer:input3" />
+    </port>
+    <port name="output2">
+      <connection port="mixer:input4" />
+    </port>
+    <port name="output3">
+      <connection port="mixer:input5" />
+    </port>
+    <port name="output4">
+      <connection port="mixer:input6" />
+    </port>
+    <port name="output5">
+      <connection port="mixer:input7" />
+    </port>
+    <port name="output6">
+      <connection port="mixer:input8" />
+    </port>
+    <port name="output7">
+      <connection port="mixer:input15" />
+    </port>
+    <port name="output8">
+      <connection port="mixer:input16" />
+    </port>
+  </client>
+</jack>
