@@ -148,13 +148,17 @@ loopPage = Page "loop" cont keys
 
         keys = singleLoopKeys ++ overdubLoopKeys
 
-        singleLoopKeys = fmap go indices
+        singleLoopKeys = genKeys 0 singleLoopId indices
+        overdubLoopKeys = genKeys 2 overdubLoopId indices
+
+        genKeys keyRowOffset mkId ixs = fmap go ixs
             where
-                go (x, y) = KeyEvent 
-                    where ix = kbRow y !! x
+                go (x, y) = KeyEvent key (sendMsg $ toSelf ("/" ++ mkId (linIndex (x, y)) ++ "/toggle") [])
+                    where key = return $ kbRow (y + keyRowOffset) !! x
+
 
         indices = [ (x, y) | x <- [0 .. sizeX-1], y <- [0 .. sizeY-1] ]
-        linIndex (x, y) = x + sizeX * y
+        linIndex (x, y) = y * sizeX + x
 
       
 
@@ -190,6 +194,7 @@ flowPage = Page "flow" cont keys
             where go (m, n) = KeyEvent (return $ kbRow n !! m) (sendMsg $ toSelf ("/" ++ (trigId $ linIndex (m, n)) ++ "/toggle") []) 
 
         indices = [(x, y) | x <- [0 .. sizeX - 1], y <- [0.. sizeY - 1]]
+    
         linIndex (x, y) = y * sizeX + x
 
 ------------------------------------
