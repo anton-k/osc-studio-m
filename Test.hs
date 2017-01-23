@@ -17,7 +17,7 @@ win = Window "raga" Nothing tabs tabKeys
 
 simple = ui $ Tabs [Page "1" (ui $ Dial 0.5 "olive" (0.0, 1.0)) [], Page "2" (ui $ Dial 0.5 "orange" (0.0, 1.0)) []]
 
-tabs = setId "tabs" $ ui $ Tabs [mixPage, samPage, samVolPage, syntPage, loopPage, flowPage, tapPage, otherPage, gensPage, tracksPage, phonesPage]
+tabs = setId "tabs" $ ui $ Tabs [mixPage, samPage, samVolPage, syntPage, loopPage, flowPage, tapPage, otherPage, gensPage, tracksPage, phonesPage, deleteLoopPage]
 
 toSelf    = Msg "self"
 toSampler = Msg "sampler"
@@ -133,8 +133,22 @@ syntPage = Page "synt" cont []
 
 loopPage = Page "loop" cont []
     where
-        cont = ui $ MultiToggle [] (4, 3) "olive" []
+        cont = ui $ Ver 
+                [ multiUi (5, 2) singleLoop
+                , multiUi (5, 2) overdubLoop ]
 
+        singleLoop  n = ui $ Hor [ ui $ CircleButton "orange" , ui $ Toggle True "olive" "" ]
+        overdubLoop n = ui $ Hor [ ui $ CircleToggle True "blue" , ui $ Toggle True "navy" "" ]
+      
+
+deleteLoopPage = Page "del-loop" cont []
+    where
+        cont = ui $ Ver 
+            [ multiUi (5, 2) singleLoop
+            , multiUi (5, 2) overdubLoop ]
+
+        singleLoop  n = ui $ Button "olive" ""
+        overdubLoop n = ui $ Button "navy"  ""
 
 ------------------------------------
 

@@ -68,6 +68,9 @@ data Sym
     | Button { color:: String, text:: String }
     | Label  { color:: String, text:: String }
 
+    | CircleToggle { initBool :: Bool, color :: String }
+    | CircleButton { color :: String }
+
     | MultiToggle { initSet :: [Int2], size:: Size, color:: String, texts:: [String] }
     | HCheck      { initInt :: Int,   leng:: Int, color:: String, texts:: [String], allowDeselect :: Maybe Bool }
     | VCheck      { initInt :: Int,   leng:: Int, color:: String, texts:: [String], allowDeselect :: Maybe Bool }
@@ -182,6 +185,9 @@ instance ToJSON Sym where
         IntDial init color range -> "int-dial" =: object [ "init" .= init, "color" .= color, "range" .= fromPair range ]
         Button color text -> "button" =: object [ "color" .= color, "text" .= text ]
         Label color text -> "label" =: object [ "color" .= color, "text" .= text ]
+
+        CircleToggle init color -> "circle-toggle" =: object [ "init" .= init, "color" .= color ]
+        CircleButton color -> "circle-button" =: object [ "color" .= color ]
 
         MultiToggle  initSet size color texts -> "multi-toggle" =: object [ "init" .= initSet, "color" .= color, "texts" .= texts, "size" .= fromPair size ]
         HCheck init leng color texts allowDeselect -> "hcheck" =: (object $ (let xs = [ "init" .= init, "size" .= leng, "color" .= color, "texts" .= texts ] in maybe xs (:xs) (fmap ("allow-deselect" .=) allowDeselect)))
