@@ -131,14 +131,31 @@ syntPage = Page "synt" cont []
 
 ------------------------------------
 
-loopPage = Page "loop" cont []
+loopPage = Page "loop" cont keys
     where
-        cont = ui $ Ver 
-                [ multiUi (5, 2) singleLoop
-                , multiUi (5, 2) overdubLoop ]
+        sizes@(sizeX, sizeY) = (5, 2)
 
-        singleLoop  n = ui $ Hor [ ui $ CircleButton "orange" , ui $ Toggle True "olive" "" ]
-        overdubLoop n = ui $ Hor [ ui $ CircleToggle True "blue" , ui $ Toggle True "navy" "" ]
+        cont = ui $ Ver 
+                [ multiUi sizes singleLoop
+                , multiUi sizes overdubLoop ]
+
+        singleLoop  n = ui $ Hor [ ui $ CircleButton "orange" ,    setId (singleLoopId n)  $ ui $ Toggle True "olive" (toText n) ]
+        overdubLoop n = ui $ Hor [ ui $ CircleToggle True "blue" , setId (overdubLoopId n) $ ui $ Toggle True "navy" (toText n) ]
+        toText n = "" --show ((n `mod` 5) `div` 2 + 1)
+
+        singleLoopId n = "single-loop-" ++ show n
+        overdubLoopId n = "overdub-loop-" ++ show n
+
+        keys = singleLoopKeys ++ overdubLoopKeys
+
+        singleLoopKeys = fmap go indices
+            where
+                go (x, y) = KeyEvent 
+                    where ix = kbRow y !! x
+
+        indices = [ (x, y) | x <- [0 .. sizeX-1], y <- [0 .. sizeY-1] ]
+        linIndex (x, y) = x + sizeX * y
+
       
 
 deleteLoopPage = Page "del-loop" cont []
