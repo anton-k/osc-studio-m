@@ -142,7 +142,7 @@ loopPage = Page "loop" cont keys
                 , multiUi (sizeX, 1) ambiLoop ]
 
         singleLoop  n = ui $ Hor [ startSingleLoopMsg  n $ setId (startSingleLoopId  n) $ ui $ CircleButton "orange"    , toggleLoopMsg 0 n                     $ setId (singleLoopId n)  $ ui $ Toggle True "olive" (toText n) ]
-        overdubLoop n = ui $ Hor [ startOverdubLoopMsg n $ setId (startOverdubLoopId n) $ ui $ CircleToggle True  "teal", toggleLoopMsg (sizeX * sizeY) n       $ setId (overdubLoopId n) $ ui $ Toggle True "blue"  (toText n) ]
+        overdubLoop n = ui $ Hor [ startOverdubLoopMsg n $ setId (startOverdubLoopId n) $ ui $ CircleToggle True  "blue", toggleLoopMsg (sizeX * sizeY) n       $ setId (overdubLoopId n) $ ui $ Toggle True "blue"  (toText n) ]
         ambiLoop    n = ui $ Hor [ startAmbiLoopMsg    n $ setId (startAmbiLoopId    n) $ ui $ CircleButton   "blue"    , toggleLoopMsg (sizeX * (sizeY + 1)) n $ setId (ambiLoopId n)    $ ui $ Toggle True "navy"  (toText n) ]
         toText n = "" --show ((n `mod` 5) `div` 2 + 1)
 
