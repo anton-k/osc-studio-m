@@ -30,7 +30,20 @@ data Param = Param
 
 type Keys = [KeyEvent]
 data KeyEvent = KeyEvent { key:: HotKey, send:: Send }
-type HotKey = String
+newtype HotKey = HotKey { unHotKey :: [String] }
+
+instance IsString HotKey where
+    fromString key = HotKey [key]
+
+withModifiers :: [String] -> HotKey -> HotKey
+withModifiers xs (HotKey ys) = HotKey (ys ++ xs)
+
+ctrl, shift, meta, alt :: HotKey -> HotKey
+
+ctrl  = withModifiers ["ctrl"]
+shift = withModifiers ["shift"]
+meta  = withModifiers ["meta"]
+alt   = withModifiers ["alt"]
 
 data Send = Send 
     { sendDefault :: [Msg]
@@ -151,6 +164,13 @@ instance ToJSON Page where
 
 instance ToJSON KeyEvent where
     toJSON k = object ["key" .= key k, "send" .=  send k ]
+        where 
+            
+
+instance ToJSON HotKey where
+    toJSON (HotKey xs) = case xs of
+        [k] -> toJSON k
+        _   -> toJSON xs
 
 instance ToJSON Send where
     toJSON (Send defaults onValue onValueOff) = object $ ("default" .= defaults) : (tfm "case" onValue ++ tfm "case-off" onValueOff)

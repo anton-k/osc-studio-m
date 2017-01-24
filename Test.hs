@@ -3,6 +3,7 @@ module Test where
 import Data.Aeson
 import Ui
 import Song(mainSend, songNames)
+import Data.String
 
 import qualified Data.ByteString.Lazy as LB
 
@@ -36,7 +37,7 @@ tabKeys =
     , key "]" 8
     , key "'" 9 ]
     where
-        key name tabId = KeyEvent name (sendMsg $ toSelf "/tabs" [ArgInt tabId])
+        key name tabId = KeyEvent (fromString name) (sendMsg $ toSelf "/tabs" [ArgInt tabId])
 
 --------------------------------------
 
@@ -90,10 +91,10 @@ mixPage = Page "mix" cont keys
         soloKeys = genToggle soloId 3
 
         genVolKeys rowId dv = zipWith go (take mixSize (kbRow rowId)) [0 .. ]
-            where go key n = KeyEvent (return key) (sendMsg $ toSelf ("/" ++ faderId n ++ "/add-float") [ArgFloat dv])            
+            where go key n = KeyEvent key (sendMsg $ toSelf ("/" ++ faderId n ++ "/add-float") [ArgFloat dv])            
 
         genToggle mkId rowId = zipWith go (take mixSize (kbRow rowId)) [0 .. ]
-            where go key n = KeyEvent (return key) (sendMsg $ toSelf ("/" ++ mkId n ++ "/toggle") [])
+            where go key n = KeyEvent key (sendMsg $ toSelf ("/" ++ mkId n ++ "/toggle") [])
 
 mixNames = fmap (ui . Label "blue") ["flow", "s low", "s high", "tap", "synt", "loop", "tick", "main"]        
 
@@ -107,7 +108,7 @@ samPage = Page "sam" (setId samId $ setSend (Send [] outKeys []) $ ui cont) kbKe
         cont = MultiToggle [] (sizeX, sizeY) "olive" []
 
         kbKeys = fmap hkey indices
-            where hkey (m, n) = KeyEvent (return $ kbRow n !! m) $ sendMsg $ toSelf "/sam/multi-toggle" [ArgInt m, ArgInt n]
+            where hkey (m, n) = KeyEvent (kbRow n !! m) $ sendMsg $ toSelf "/sam/multi-toggle" [ArgInt m, ArgInt n]
 
         outKeys = indices >>= (\x -> [on x, off x])
             where
@@ -137,39 +138,86 @@ loopPage = Page "loop" cont keys
 
         cont = ui $ Ver 
                 [ multiUi sizes singleLoop
-                , multiUi sizes overdubLoop ]
+                , multiUi (sizeX, 1) overdubLoop 
+                , multiUi (sizeX, 1) ambiLoop ]
 
-        singleLoop  n = ui $ Hor [ ui $ CircleButton "orange" ,    setId (singleLoopId n)  $ ui $ Toggle True "olive" (toText n) ]
-        overdubLoop n = ui $ Hor [ ui $ CircleToggle True "blue" , setId (overdubLoopId n) $ ui $ Toggle True "navy" (toText n) ]
+        singleLoop  n = ui $ Hor [ startSingleLoopMsg  n $ setId (startSingleLoopId  n) $ ui $ CircleButton "orange"    , toggleLoopMsg 0 n                     $ setId (singleLoopId n)  $ ui $ Toggle True "olive" (toText n) ]
+        overdubLoop n = ui $ Hor [ startOverdubLoopMsg n $ setId (startOverdubLoopId n) $ ui $ CircleToggle True  "teal", toggleLoopMsg (sizeX * sizeY) n       $ setId (overdubLoopId n) $ ui $ Toggle True "blue"  (toText n) ]
+        ambiLoop    n = ui $ Hor [ startAmbiLoopMsg    n $ setId (startAmbiLoopId    n) $ ui $ CircleButton   "blue"    , toggleLoopMsg (sizeX * (sizeY + 1)) n $ setId (ambiLoopId n)    $ ui $ Toggle True "navy"  (toText n) ]
         toText n = "" --show ((n `mod` 5) `div` 2 + 1)
 
         singleLoopId n = "single-loop-" ++ show n
         overdubLoopId n = "overdub-loop-" ++ show n
+        ambiLoopId n = "ambi-loop-" ++ show n
+        startSingleLoopId n = "start-single-rec-" ++ show n
+        startOverdubLoopId n = "start-overdub-rec-" ++ show n
+        startAmbiLoopId n = "start-ambi-rec-" ++ show n
 
-        keys = singleLoopKeys ++ overdubLoopKeys
+        startSingleLoopMsg  n = setMsg (toSampler "/start_rec" [ArgInt n])
 
-        singleLoopKeys = genKeys 0 singleLoopId indices
-        overdubLoopKeys = genKeys 2 overdubLoopId indices
+        startOverdubLoopMsg n = onBool (msg "start_rec") (msg "stop_rec")
+            where msg name = toSampler ("/" ++ name) [ArgInt (sizeX * sizeY + n)]
 
-        genKeys keyRowOffset mkId ixs = fmap go ixs
+        startAmbiLoopMsg  n = setMsg (toSampler "/start_rec" [ArgInt $ n + sizeX * (sizeY + 1)])            
+
+        toggleLoopMsg shift n = onBool (msg "play") (msg "stop")
+            where msg name = toSampler ("/" ++ name) [ArgInt (n + shift)]
+
+        keys = singleLoopKeys ++ overdubLoopKeys ++ ambiLoopKeys ++ startSingleLoopKeys ++ startOverdubLoopKeys ++ startAmbiLoopKeys
+
+        singleLoopKeys          = genKeys id   togMsg 0 singleLoopId indices
+        overdubLoopKeys         = genKeys id   togMsg 2 overdubLoopId indices2
+        ambiLoopKeys            = genKeys id   togMsg 3 ambiLoopId indices2
+
+        startSingleLoopKeys     = genKeys alt  butMsg 0 startSingleLoopId indices
+        startOverdubLoopKeys    = genKeys alt  togMsg 2 startOverdubLoopId indices2
+        startAmbiLoopKeys       = genKeys alt  butMsg 3 startAmbiLoopId indices2
+
+        togMsg str = str ++ "/toggle"
+        butMsg str = str
+
+        genKeys addKeyModifier msgType keyRowOffset mkId ixs = fmap go ixs
             where
-                go (x, y) = KeyEvent key (sendMsg $ toSelf ("/" ++ mkId (linIndex (x, y)) ++ "/toggle") [])
-                    where key = return $ kbRow (y + keyRowOffset) !! x
-
+                go (x, y) = KeyEvent (addKeyModifier key) (sendMsg $ toSelf (msgType $ "/" ++ mkId (linIndex (x, y))) [])
+                    where key = kbRow (y + keyRowOffset) !! x
 
         indices = [ (x, y) | x <- [0 .. sizeX-1], y <- [0 .. sizeY-1] ]
+        indices2 = [ (x, y) | x <- [0 .. sizeX-1], y <- [0] ]
         linIndex (x, y) = y * sizeX + x
 
       
-
-deleteLoopPage = Page "del-loop" cont []
+deleteLoopPage = Page "del-loop" cont keys
     where
-        cont = ui $ Ver 
-            [ multiUi (5, 2) singleLoop
-            , multiUi (5, 2) overdubLoop ]
+        sizes@(sizeX, sizeY) = (5, 2)
 
-        singleLoop  n = ui $ Button "olive" ""
-        overdubLoop n = ui $ Button "navy"  ""
+        cont = ui $ Ver 
+            [ multiUi (sizeX, sizeY) singleLoop
+            , multiUi (sizeX, 1) overdubLoop 
+            , multiUi (sizeX, 1) ambiLoop ]
+
+        singleLoop  n = delSingle  n $ setId (singleId  n) $ ui $ Button "olive" ""
+        overdubLoop n = delOverdub n $ setId (overdubId n) $ ui $ Button "blue"  ""
+        ambiLoop    n = delAmbi    n $ setId (ambiId    n) $ ui $ Button "navy"  ""
+
+        singleId n = "del-single-" ++ show n
+        overdubId n = "del-overdub-" ++ show n
+        ambiId n = "del-ambi-" ++ show n
+
+        delSingle n = delMsg n
+        delOverdub n = delMsg (n + sizeX * sizeY)
+        delAmbi n = delMsg (n + sizeX * sizeY + sizeX)
+
+        delMsg n = setMsg $ toSampler "/clear_loop" [ArgInt n]
+
+        keys = singleKeys ++ overdubKeys ++ ambiKeys
+
+        singleKeys = fmap (genKey 0 singleId) $ take (sizeX * sizeY) [0 .. ]
+        overdubKeys = fmap (genKey (sizeX * sizeY) overdubId) $ take (sizeX) [0 .. ]
+        ambiKeys = fmap (genKey (sizeX * (sizeY + 1)) ambiId) $ take (sizeX) [0 .. ]
+
+        genKey shift mkId n = KeyEvent (alt $ kbRow y !! x) $ sendMsg $ toSelf ("/" ++ mkId n) []
+            where (y, x) = divMod (shift + n) sizeX
+
 
 ------------------------------------
 
@@ -191,7 +239,7 @@ flowPage = Page "flow" cont keys
 
         -- hot keys
         keys = fmap go indices
-            where go (m, n) = KeyEvent (return $ kbRow n !! m) (sendMsg $ toSelf ("/" ++ (trigId $ linIndex (m, n)) ++ "/toggle") []) 
+            where go (m, n) = KeyEvent (kbRow n !! m) (sendMsg $ toSelf ("/" ++ (trigId $ linIndex (m, n)) ++ "/toggle") []) 
 
         indices = [(x, y) | x <- [0 .. sizeX - 1], y <- [0.. sizeY - 1]]
     
@@ -231,10 +279,10 @@ tracksPage = Page "tracks" (setId trackId $ setSend mainSend cont) keys
         keys = firstKeys ++ secondKeys 1 ++ secondKeys 2 
         
         firstKeys = zipWith go [0 .. sizeX - 1] $ kbRow 0
-            where go n key = KeyEvent (return key) (sendMsg $ toSelf ("/" ++ trackId ++ "/double-check/1") [ArgInt n])  
+            where go n key = KeyEvent key (sendMsg $ toSelf ("/" ++ trackId ++ "/double-check/1") [ArgInt n])  
 
         secondKeys rowId = zipWith go [0 .. 3] $ kbRow rowId
-            where go n key = KeyEvent (return key) (sendMsg $ toSelf ("/" ++ trackId ++ "/double-check/2") [ArgInt (n + 4 * (rowId - 1)) ])
+            where go n key = KeyEvent key (sendMsg $ toSelf ("/" ++ trackId ++ "/double-check/2") [ArgInt (n + 4 * (rowId - 1)) ])
 
         formNames sections songs = case (sections, songs) of
             ([], _) -> []
@@ -257,7 +305,9 @@ phonesPage = Page "phones" cont []
 -------------------------
 -- keyboard
 
-kbRow 0 = "1234567890-="
-kbRow 1 = "qwertyuiop[]"
-kbRow 2 = "asdfghjkl;'"
-kbRow 3 = "zxcvbnm,./"
+kbRow n = fmap (fromString . return) $ kbStrRow n
+
+kbStrRow 0 = "1234567890-="
+kbStrRow 1 = "qwertyuiop[]"
+kbStrRow 2 = "asdfghjkl;'"
+kbStrRow 3 = "zxcvbnm,./"
