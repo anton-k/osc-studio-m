@@ -9,7 +9,7 @@ import qualified Data.ByteString.Lazy as LB
 
 main = do
     let res = encode root
-    LB.writeFile "test.json" $ res
+    LB.writeFile "../test.json" $ res
     print $ LB.length res
 
 root = Root [win] []
