@@ -12,7 +12,10 @@ type Size = (Int, Int)
 type Float2 = (Float, Float)
 type Int2 = (Int, Int)
 
-data Root = Root [Window] Keys
+data Root = Root 
+    { rootWindows :: [Window] 
+    , rootKeys    :: Keys 
+    , rootInitOSc :: [Msg] }
 
 data Window = Window 
     { windowTitle   :: String
@@ -138,7 +141,7 @@ multiUi (xSize, ySize) unit = ui $ Ver $ fmap row $ take ySize [0, xSize .. ]
 -- toJson
 
 instance ToJSON Root where
-    toJSON (Root windows keys) = object ["main" .= windows, "keys" .= keys]
+    toJSON (Root windows keys initSend) = object ["main" .= windows, "keys" .= keys, "init-send" .= initSend]
 
 instance ToJSON Window where
     toJSON (Window title size content keys) = "window" =: (object $ catMaybes [Just $ "title" .= title, fmap (\sz -> "size" .=  [fst sz, snd sz]) size, Just $ "content" .= content, Just $ "keys" .= keys])

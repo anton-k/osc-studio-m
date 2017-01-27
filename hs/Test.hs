@@ -12,7 +12,7 @@ main = do
     LB.writeFile "../test.json" $ res
     print $ LB.length res
 
-root = Root [win] []
+root = Root [win] [] []
 
 win = Window "raga" Nothing tabs tabKeys
 
