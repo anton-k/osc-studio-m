@@ -1,3 +1,14 @@
+// command line proces launcher with OSC
+//
+// OSC API
+//
+//   /run  string                   -- runs a command 
+//   /kill name                     -- kill all processes
+//   /exit                          -- stop self
+// 
+//   /process/run      name cmd     -- starts named process
+//   /process/restart  name         -- restarts process by name
+//   /proces/kill      name         -- kills process by name
 import scala.audio.osc._
 
 case class Server(args: Args) {
