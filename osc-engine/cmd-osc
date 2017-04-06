@@ -1,0 +1,96 @@
+#!/usr/bin/python
+import sys, socket, subprocess, OSC, threading, time
+
+port = 5555
+
+if (len(sys.argv) == 3 and sys.argv[1] == '--port'):
+    port = int(sys.argv[2])
+
+print "port is set to %d" % port
+
+
+s = OSC.OSCServer(("0.0.0.0", port))
+
+default_proc = None
+procs = {}
+
+def get_cmd(cmd):
+    return cmd.split(' ')
+
+def run_process(cmd):
+    return subprocess.Popen(get_cmd(cmd))
+
+def kill_process_by_name(procs, name):
+    pOld = procs.get(name)
+    kill_process(pOld)
+
+def kill_process(pOld):    
+    if (not (pOld is None)):        
+        pOld.terminate()
+        pOld.kill()        
+        
+def save_process(procs, name, p):
+    procs[name] = p
+
+
+def on_run(addr, tags, stuff, source):
+    global procs
+    name = stuff[0]
+    cmd  = stuff[1]
+    print "/process/run  %s  %s" % (name, cmd)
+    print procs
+    kill_process_by_name(procs, name)
+
+    p = run_process(cmd)
+    save_process(procs, name, p)
+
+def on_kill(addr, tags, stuff, source):
+    global procs
+    name = stuff[0]
+    print "/process/kill  %s" % name
+    print procs
+    kill_process_by_name(procs, name)
+
+def on_run_all(addr, tags, stuff, source):
+    global default_proc
+    cmd = stuff[0]
+    print "/run  %s" % cmd
+    kill_process(default_proc)
+    default_proc = run_process(cmd)
+
+def on_kill_all(addr, tags, stuff, source):
+    global default_proc
+    print "/kill" 
+    kill_process(default_proc)
+
+def on_exit(addr, tags, stuff, source):
+    print "/exit" 
+    sys.exit()
+
+
+s.addDefaultHandlers()
+
+s.addMsgHandler("/process/run", on_run)
+s.addMsgHandler("/process/kill", on_kill)
+
+s.addMsgHandler("/run", on_run_all)
+s.addMsgHandler("/kill", on_kill_all)
+
+s.addMsgHandler("/exit", on_exit)
+
+
+print "\nStarting OSCServer. Use ctrl-C to quit."
+st = threading.Thread( target = s.serve_forever )
+st.start()
+
+try :
+    while 1 :
+        time.sleep(5)
+
+except KeyboardInterrupt :
+    print "\nClosing OSCServer."
+    s.close()
+    print "Waiting for Server-thread to finish"
+    st.join() ##!!!
+    print "Done"
+        
